@@ -41,7 +41,10 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
-            AutocompleteSearchBar(),
+            Container(
+              child: AutocompleteSearchBar(),
+              margin: const EdgeInsets.all(15),
+            ),
           ],
         ),
       ),

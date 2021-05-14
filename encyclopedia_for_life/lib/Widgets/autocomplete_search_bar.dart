@@ -11,13 +11,22 @@ class AutocompleteSearchBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return TypeAheadField(
       textFieldConfiguration: TextFieldConfiguration(
-          autofocus: true,
-          style: TextStyle(
-            fontStyle: FontStyle.italic,
-            fontSize: 25,
-            color: Colors.green,
+        decoration: new InputDecoration(
+          labelText: "Search",
+          fillColor: Colors.white,
+          border: new OutlineInputBorder(
+            borderRadius: new BorderRadius.circular(50.0),
+            borderSide: new BorderSide(),
           ),
-          decoration: InputDecoration(border: OutlineInputBorder())),
+          //fillColor: Colors.green
+        ),
+        autofocus: true,
+        style: TextStyle(
+          fontStyle: FontStyle.italic,
+          fontSize: 20,
+          color: Colors.green,
+        ),
+      ),
       suggestionsCallback: (pattern) async {
         return await BackendService.getInstance().getSuggestions(pattern);
       },
