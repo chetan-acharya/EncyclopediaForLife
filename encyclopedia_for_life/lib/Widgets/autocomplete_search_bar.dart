@@ -1,4 +1,5 @@
 import 'package:encyclopedia_for_life/BackendService/backend_service.dart';
+import 'package:encyclopedia_for_life/detail_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 
@@ -38,8 +39,8 @@ class AutocompleteSearchBar extends StatelessWidget {
             leading: Icon(Icons.pets), title: Text(suggestion.name));
       },
       onSuggestionSelected: (suggestion) {
-        // Navigator.of(context).push(MaterialPageRoute(
-        //     builder: (context) => ProductPage(product: suggestion)));
+        Navigator.of(context).push(
+            MaterialPageRoute(builder: (context) => DetailPage(suggestion.id)));
       },
     );
   }
