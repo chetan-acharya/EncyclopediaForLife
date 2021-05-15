@@ -33,7 +33,7 @@ mixin ItemDetail {
       // then throw an exception.
       itemDetail.name = '';
       itemDetail.description =
-          'No random data available. Scroll from the top to refresh.';
+          'No random data available. Pull from the top to refresh.';
       itemDetail.imageURL =
           'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTqICensWiWUSbyUFkXY0e1HL3H0ITIN1uuXetIyeyGJ9N21WfH5Pps1TxF7YLMFYaaq6E&usqp=CAU';
       return itemDetail;

@@ -49,7 +49,8 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
-  final randomId = Random().nextInt(35000);
+  var randomId = Random().nextInt(35000);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -57,23 +58,53 @@ class _MyHomePageState extends State<MyHomePage> {
         centerTitle: true,
         title: Text(widget.title),
       ),
-      body: Container(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[
-            Container(
-              height: 100,
-              child: AutocompleteSearchBar(
-                onFocusChange: onAutoCompleteFocusChange,
-              ),
-              margin: const EdgeInsets.all(15),
+      body: RefreshIndicator(
+        onRefresh: () {
+          return Future.delayed(
+            Duration(seconds: 1),
+            () {
+              setState(() {
+                randomId = Random().nextInt(35000);
+              });
+            },
+          );
+        },
+        child: SingleChildScrollView(
+          physics: const AlwaysScrollableScrollPhysics(),
+          child: Container(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: <Widget>[
+                Container(
+                  height: 100,
+                  child: AutocompleteSearchBar(
+                    onFocusChange: onAutoCompleteFocusChange,
+                  ),
+                  margin: const EdgeInsets.all(15),
+                ),
+                Text('Random Fact',
+                    style:
+                        TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
+                Icon(
+                  Icons.arrow_downward,
+                  color: Colors.red,
+                  size: 20,
+                ),
+                SizedBox(
+                    width: double.infinity,
+                    height: isAutoCompleteFocused ? 0 : 600,
+                    child: DetailPage(
+                      key: UniqueKey(),
+                      pageId: randomId.toString(),
+                    )),
+                Text(
+                  'Pull to refresh',
+                  style: TextStyle(fontStyle: FontStyle.italic),
+                )
+                // if (!isAutoCompleteFocused)
+              ],
             ),
-            // if (!isAutoCompleteFocused)
-            SizedBox(
-                width: double.infinity,
-                height: isAutoCompleteFocused ? 0 : 600,
-                child: DetailPage(randomId.toString()))
-          ],
+          ),
         ),
       ),
     );

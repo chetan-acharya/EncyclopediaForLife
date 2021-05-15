@@ -40,7 +40,10 @@ class AutocompleteSearchBar extends StatelessWidget {
           },
           onSuggestionSelected: (suggestion) {
             Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => DetailPage(suggestion.id)));
+                builder: (context) => DetailPage(
+                      key: UniqueKey(),
+                      pageId: suggestion.id,
+                    )));
           },
         ),
       ),

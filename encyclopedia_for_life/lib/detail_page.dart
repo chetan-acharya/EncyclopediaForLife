@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:encyclopedia_for_life/BackendService/backend_service.dart';
 
 class DetailPage extends StatefulWidget {
+  DetailPage({Key key, this.pageId}) : super(key: key);
   final String pageId;
 
-  DetailPage(this.pageId);
   @override
   _DetailPageState createState() => _DetailPageState();
 }
