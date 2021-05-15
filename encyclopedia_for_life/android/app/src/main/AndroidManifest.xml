@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.encyclopedia_for_life">
    <application
-        android:label="encyclopedia_for_life"
+        android:label="Encylopedia For Life"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
