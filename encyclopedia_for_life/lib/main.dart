@@ -1,3 +1,6 @@
+import 'dart:math';
+
+import 'package:encyclopedia_for_life/detail_page.dart';
 import 'package:flutter/material.dart';
 
 import 'Widgets/autocomplete_search_bar.dart';
@@ -15,7 +18,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         // This is the theme of your application.
-        primarySwatch: Colors.green,
+        primarySwatch: Colors.purple,
       ),
       home: MyHomePage(title: 'Encyclopedia For Life'),
     );
@@ -31,10 +34,27 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  bool isAutoCompleteFocused = false;
+  void onAutoCompleteFocusChange(bool isFocused) {
+    if (isFocused) {
+      setState(() {
+        isAutoCompleteFocused = isFocused;
+      });
+    } else {
+      Future.delayed(const Duration(milliseconds: 200), () {
+        setState(() {
+          isAutoCompleteFocused = isFocused;
+        });
+      });
+    }
+  }
+
+  final randomId = Random().nextInt(35000);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
         title: Text(widget.title),
       ),
       body: Container(
@@ -42,9 +62,17 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
             Container(
-              child: AutocompleteSearchBar(),
+              height: 100,
+              child: AutocompleteSearchBar(
+                onFocusChange: onAutoCompleteFocusChange,
+              ),
               margin: const EdgeInsets.all(15),
             ),
+            // if (!isAutoCompleteFocused)
+            SizedBox(
+                width: double.infinity,
+                height: isAutoCompleteFocused ? 0 : 600,
+                child: DetailPage(randomId.toString()))
           ],
         ),
       ),

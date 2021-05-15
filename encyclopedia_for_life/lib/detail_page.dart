@@ -15,7 +15,6 @@ class _DetailPageState extends State<DetailPage> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _itemDetail = BackendService.getInstance().getDetail(widget.pageId);
   }
@@ -33,15 +32,31 @@ class _DetailPageState extends State<DetailPage> {
             List<Widget> children;
             if (snapshot.hasData) {
               children = <Widget>[
-                const Icon(
-                  Icons.check_circle_outline,
-                  color: Colors.green,
-                  size: 60,
+                Expanded(
+                  flex: 2,
+                  child: Container(
+                    margin: EdgeInsets.only(top: 50, bottom: 50),
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      image: DecorationImage(
+                          image: NetworkImage(snapshot.data.imageURL),
+                          fit: BoxFit.fill),
+                    ),
+                  ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 16),
-                  child: Image.network(snapshot.data.imageURL),
-                )
+                Expanded(
+                  flex: 1,
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 5, right: 5),
+                    child: Text(
+                      snapshot.data.description,
+                      style: TextStyle(
+                          fontSize: 20,
+                          fontStyle: FontStyle.italic,
+                          fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                ),
               ];
             } else if (snapshot.hasError) {
               children = <Widget>[
@@ -64,7 +79,10 @@ class _DetailPageState extends State<DetailPage> {
                 ),
                 Padding(
                   padding: EdgeInsets.only(top: 16),
-                  child: Text('Awaiting result...'),
+                  child: Text(
+                    'Loading...',
+                    style: TextStyle(fontSize: 20),
+                  ),
                 )
               ];
             }
