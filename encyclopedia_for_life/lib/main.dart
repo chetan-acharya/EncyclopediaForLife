@@ -49,6 +49,7 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
+  bool isRefreshing = false;
   var randomId = Random().nextInt(35000);
 
   @override
@@ -60,11 +61,15 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       body: RefreshIndicator(
         onRefresh: () {
+          setState(() {
+            isRefreshing = true;
+            randomId = Random().nextInt(35000);
+          });
           return Future.delayed(
-            Duration(seconds: 1),
+            Duration(seconds: 3),
             () {
               setState(() {
-                randomId = Random().nextInt(35000);
+                isRefreshing = false;
               });
             },
           );
@@ -83,23 +88,28 @@ class _MyHomePageState extends State<MyHomePage> {
                   margin: const EdgeInsets.all(15),
                 ),
                 Text('Random Fact',
-                    style:
-                        TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
+                    style: TextStyle(
+                        color: Colors.purple,
+                        fontWeight: FontWeight.bold,
+                        fontSize:
+                            isAutoCompleteFocused || isRefreshing ? 0 : 20)),
                 Icon(
                   Icons.arrow_downward,
-                  color: Colors.red,
-                  size: 20,
+                  color: Colors.purple,
+                  size: isAutoCompleteFocused || isRefreshing ? 0 : 20,
                 ),
                 SizedBox(
                     width: double.infinity,
                     height: isAutoCompleteFocused ? 0 : 600,
                     child: DetailPage(
-                      key: UniqueKey(),
+                      key: Key(randomId.toString()),
                       pageId: randomId.toString(),
                     )),
                 Text(
                   'Pull to refresh',
-                  style: TextStyle(fontStyle: FontStyle.italic),
+                  style: TextStyle(
+                      fontStyle: FontStyle.italic,
+                      fontSize: isAutoCompleteFocused || isRefreshing ? 0 : 15),
                 )
                 // if (!isAutoCompleteFocused)
               ],
