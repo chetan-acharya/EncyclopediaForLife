@@ -68,20 +68,13 @@ class _DetailPageState extends State<DetailPage> {
           child: CarouselSlider(
             options: CarouselOptions(
               height: double.infinity,
-              viewportFraction: 0.8,
+              viewportFraction: 0.82,
               autoPlay: true,
               autoPlayInterval: Duration(seconds: 3),
               autoPlayCurve: Curves.fastOutSlowIn,
               enlargeCenterPage: true,
             ),
-            items: [
-              snapshot.data.imageURL,
-              snapshot.data.imageURL,
-              snapshot.data.imageURL,
-              snapshot.data.imageURL,
-              snapshot.data.imageURL,
-              snapshot.data.imageURL
-            ].map((imageURL) {
+            items: snapshot.data.imageURLs.map((imageURL) {
               return Builder(
                 builder: (BuildContext context) {
                   return Container(

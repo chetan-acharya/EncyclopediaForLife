@@ -3,8 +3,10 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 mixin ItemDetail {
-  ItemDetailResult itemDetail = new ItemDetailResult();
+  //variable in ItemDetail mixin, needs to be initialized in a method of ItemDetail
+  ItemDetailResult itemDetail;
   Future<ItemDetailResult> getDetail(String id) async {
+    itemDetail = new ItemDetailResult(imageURLs: []);
     final itemDetailResponse = await fetchDescription(id);
 
     if (itemDetailResponse.statusCode == 200) {
@@ -26,16 +28,17 @@ mixin ItemDetail {
           Map<String, dynamic> imageResultJson =
               json.decode(itemImageResponse.body);
 
-          //getting image at position 1
-          //todo: get all the images to show
-          itemDetail.imageURL =
-              imageResultJson['taxonConcept']['dataObjects'][1]['eolMediaURL'];
+          //getting images and using it in imageURl
+
+          for (var item in imageResultJson['taxonConcept']['dataObjects']) {
+            itemDetail.imageURLs.add(item['eolMediaURL']);
+          }
         } catch (e) {
           //getting image of 'no image available' to show when image data was not present in
           //previous API call
 
-          itemDetail.imageURL =
-              'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTqICensWiWUSbyUFkXY0e1HL3H0ITIN1uuXetIyeyGJ9N21WfH5Pps1TxF7YLMFYaaq6E&usqp=CAU';
+          itemDetail.imageURLs.add(
+              'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTqICensWiWUSbyUFkXY0e1HL3H0ITIN1uuXetIyeyGJ9N21WfH5Pps1TxF7YLMFYaaq6E&usqp=CAU');
         }
       }
       return itemDetail;
@@ -45,8 +48,8 @@ mixin ItemDetail {
       itemDetail.name = '';
       itemDetail.description =
           'No random data available. Pull from the top to refresh.';
-      itemDetail.imageURL =
-          'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTqICensWiWUSbyUFkXY0e1HL3H0ITIN1uuXetIyeyGJ9N21WfH5Pps1TxF7YLMFYaaq6E&usqp=CAU';
+      itemDetail.imageURLs.add(
+          'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTqICensWiWUSbyUFkXY0e1HL3H0ITIN1uuXetIyeyGJ9N21WfH5Pps1TxF7YLMFYaaq6E&usqp=CAU');
       return itemDetail;
     }
   }
@@ -59,7 +62,7 @@ mixin ItemDetail {
   Future<http.Response> fetchImage(String id) {
     final Map<String, String> _queryParameters = <String, String>{
       'taxonomy': 'false',
-      'images_per_page': '2',
+      'images_per_page': '10',
       'details': 'false'
     };
     return http.get(Uri.https(
@@ -71,6 +74,6 @@ mixin ItemDetail {
 class ItemDetailResult {
   String name;
   String description;
-  String imageURL;
-  ItemDetailResult({this.name, this.description, this.imageURL});
+  List<String> imageURLs;
+  ItemDetailResult({this.name, this.description, this.imageURLs});
 }
