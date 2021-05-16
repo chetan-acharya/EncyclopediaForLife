@@ -59,7 +59,7 @@ class _DetailPageState extends State<DetailPage> {
 //this widget is called when API call is successful and we have some data to show
   List<Widget> onSuccessDataWidget(AsyncSnapshot<ItemDetailResult> snapshot) {
     return <Widget>[
-      Expanded(
+      Flexible(
         flex: 2,
         child: Container(
           margin: EdgeInsets.only(top: 50, bottom: 50),
@@ -70,7 +70,7 @@ class _DetailPageState extends State<DetailPage> {
           ),
         ),
       ),
-      Expanded(
+      Flexible(
         flex: 1,
         child: Padding(
           padding: const EdgeInsets.only(left: 5, right: 5),

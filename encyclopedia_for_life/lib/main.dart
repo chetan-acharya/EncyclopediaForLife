@@ -58,11 +58,12 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    var appBar = AppBar(
+      centerTitle: true,
+      title: Text(widget.title),
+    );
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: Text(widget.title),
-      ),
+      appBar: appBar,
       body: RefreshIndicator(
         onRefresh: () {
           setState(() {
@@ -83,52 +84,82 @@ class _MyHomePageState extends State<MyHomePage> {
         },
         child: SingleChildScrollView(
           physics: const AlwaysScrollableScrollPhysics(),
-          child: Container(
+          child: SizedBox(
+            width: double.infinity,
+            height: MediaQuery.of(context).size.height -
+                appBar.preferredSize.height,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
               children: <Widget>[
-                Container(
-                  height: 100,
-                  child: AutocompleteSearchBar(
-                    //callback is recieved when focus changes of search bar
-                    onFocusChange: onAutoCompleteFocusChange,
-                  ),
-                  margin: const EdgeInsets.all(15),
-                ),
-                Text('Random Fact',
-                    style: TextStyle(
-                        color: Colors.purple,
-                        fontWeight: FontWeight.bold,
-                        fontSize:
-                            //hack to show and hide when seach bar focus change
-                            isAutoCompleteFocused || isRefreshing ? 0 : 20)),
-                Icon(
-                  Icons.arrow_downward,
-                  color: Colors.purple,
-                  //hack to show and hide when seach bar focus change
-                  size: isAutoCompleteFocused || isRefreshing ? 0 : 20,
-                ),
-                SizedBox(
-                    width: double.infinity,
-                    //hack to show and hide when seach bar focus change
-                    height: isAutoCompleteFocused ? 0 : 600,
-                    child: DetailPage(
-                      //key is important so that this widget rebuilds when random id changes
-                      key: Key(randomId.toString()),
-                      pageId: randomId.toString(),
-                    )),
-                Text(
-                  'Pull to refresh',
-                  style: TextStyle(
-                      fontStyle: FontStyle.italic,
-                      //hack to show and hide when seach bar focus change
-                      fontSize: isAutoCompleteFocused || isRefreshing ? 0 : 15),
-                )
+                getSearchBarWidget(),
+                getRandomFactWidget(),
+                getDetailAreaWidget(),
+                getPullToRefreshTextWidget()
               ],
             ),
           ),
         ),
       ),
+    );
+  }
+
+  Flexible getPullToRefreshTextWidget() {
+    return Flexible(
+      flex: 1,
+      child: Text(
+        'Pull to refresh',
+        style: TextStyle(
+            fontStyle: FontStyle.italic,
+            //hack to show and hide when seach bar focus change
+            fontSize: isAutoCompleteFocused || isRefreshing ? 0 : 15),
+      ),
+    );
+  }
+
+  Flexible getDetailAreaWidget() {
+    return Flexible(
+      flex: 10,
+      child: DetailPage(
+        //key is important so that this widget rebuilds when random id changes
+        key: Key(randomId.toString()),
+        pageId: randomId.toString(),
+      ),
+    );
+  }
+
+  SizedBox getRandomFactWidget() {
+    return SizedBox(
+      width: double.infinity,
+      height: 50,
+      child: Column(
+        children: [
+          Text('Random Fact',
+              style: TextStyle(
+                  color: Colors.purple,
+                  fontWeight: FontWeight.bold,
+                  fontSize:
+                      //hack to show and hide when seach bar focus change
+                      isAutoCompleteFocused || isRefreshing ? 0 : 20)),
+          Icon(
+            Icons.arrow_downward,
+            color: Colors.purple,
+            //hack to show and hide when seach bar focus change
+            size: isAutoCompleteFocused || isRefreshing ? 0 : 20,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Container getSearchBarWidget() {
+    return Container(
+      height: 50,
+      child: AutocompleteSearchBar(
+        //callback is recieved when focus changes of search bar
+        onFocusChange: onAutoCompleteFocusChange,
+      ),
+      margin: const EdgeInsets.all(15),
     );
   }
 }
