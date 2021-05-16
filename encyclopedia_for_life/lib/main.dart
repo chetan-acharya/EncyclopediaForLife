@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:encyclopedia_for_life/detail_page.dart';
 import 'package:flutter/material.dart';
 
@@ -130,26 +131,29 @@ class _MyHomePageState extends State<MyHomePage> {
 
   SizedBox getRandomFactWidget() {
     return SizedBox(
-      width: double.infinity,
-      height: 50,
-      child: Column(
-        children: [
-          Text('Random Fact',
-              style: TextStyle(
-                  color: Colors.purple,
-                  fontWeight: FontWeight.bold,
-                  fontSize:
-                      //hack to show and hide when seach bar focus change
-                      isAutoCompleteFocused || isRefreshing ? 0 : 20)),
-          Icon(
-            Icons.arrow_downward,
-            color: Colors.purple,
-            //hack to show and hide when seach bar focus change
-            size: isAutoCompleteFocused || isRefreshing ? 0 : 20,
+        width: double.infinity,
+        height: 50,
+        child: Center(
+          child: AnimatedTextKit(
+            repeatForever: true,
+            animatedTexts: [
+              ColorizeAnimatedText(
+                'Random Fact',
+                textStyle: TextStyle(
+                  fontSize: isAutoCompleteFocused || isRefreshing ? 0 : 20,
+                  fontFamily: 'Horizon',
+                ),
+                colors: [
+                  Colors.purple,
+                  Colors.blue,
+                  Colors.blueAccent,
+                  Colors.lightBlue,
+                ],
+              ),
+            ],
+            isRepeatingAnimation: true,
           ),
-        ],
-      ),
-    );
+        ));
   }
 
   Container getSearchBarWidget() {
