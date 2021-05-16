@@ -1,3 +1,4 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:encyclopedia_for_life/BackendService/item_detail.dart';
 import 'package:flutter/material.dart';
 import 'package:encyclopedia_for_life/BackendService/backend_service.dart';
@@ -63,16 +64,38 @@ class _DetailPageState extends State<DetailPage> {
   List<Widget> onSuccessDataWidget(AsyncSnapshot<ItemDetailResult> snapshot) {
     return <Widget>[
       Flexible(
-        flex: 2,
-        child: Container(
-          margin: EdgeInsets.only(top: 50, bottom: 50),
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            image: DecorationImage(
-                image: NetworkImage(snapshot.data.imageURL), fit: BoxFit.cover),
-          ),
-        ),
-      ),
+          flex: 2,
+          child: CarouselSlider(
+            options: CarouselOptions(
+              height: double.infinity,
+              viewportFraction: 0.8,
+              autoPlay: true,
+              autoPlayInterval: Duration(seconds: 3),
+              autoPlayCurve: Curves.fastOutSlowIn,
+              enlargeCenterPage: true,
+            ),
+            items: [
+              snapshot.data.imageURL,
+              snapshot.data.imageURL,
+              snapshot.data.imageURL,
+              snapshot.data.imageURL,
+              snapshot.data.imageURL,
+              snapshot.data.imageURL
+            ].map((imageURL) {
+              return Builder(
+                builder: (BuildContext context) {
+                  return Container(
+                    margin: EdgeInsets.only(bottom: 50),
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      image: DecorationImage(
+                          image: NetworkImage(imageURL), fit: BoxFit.cover),
+                    ),
+                  );
+                },
+              );
+            }).toList(),
+          )),
       Flexible(
         flex: 1,
         child: Padding(
