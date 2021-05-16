@@ -43,6 +43,7 @@ class AutocompleteSearchBar extends StatelessWidget {
                 builder: (context) => DetailPage(
                       key: UniqueKey(),
                       pageId: suggestion.id,
+                      showAppBar: true,
                     )));
           },
         ),

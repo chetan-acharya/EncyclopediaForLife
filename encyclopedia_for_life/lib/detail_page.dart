@@ -3,10 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:encyclopedia_for_life/BackendService/backend_service.dart';
 
 class DetailPage extends StatefulWidget {
-  DetailPage({Key key, this.pageId}) : super(key: key);
+  DetailPage({Key key, this.pageId, this.showAppBar: false}) : super(key: key);
 
   //pageId is the id of the item we are requesting the details from the API
   final String pageId;
+  //show app bar
+  final bool showAppBar;
 
   @override
   _DetailPageState createState() => _DetailPageState();
@@ -26,7 +28,7 @@ class _DetailPageState extends State<DetailPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: widget.showAppBar ? AppBar() : null,
       body: DefaultTextStyle(
         style: Theme.of(context).textTheme.headline2,
         textAlign: TextAlign.center,
