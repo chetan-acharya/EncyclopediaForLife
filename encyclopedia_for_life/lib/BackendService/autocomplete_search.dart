@@ -21,11 +21,13 @@ mixin AutocompleteSearch {
     }
   }
 
+//this method gets the list of items related to the searchParam
   Future<http.Response> fetchItems(String searchParam) {
     return http.get(Uri.https('eol.org', 'autocomplete/' + searchParam));
   }
 }
 
+//model class for search result data from API call
 class SearchResult {
   final String name;
   final String id;

@@ -4,6 +4,8 @@ import 'package:encyclopedia_for_life/BackendService/backend_service.dart';
 
 class DetailPage extends StatefulWidget {
   DetailPage({Key key, this.pageId}) : super(key: key);
+
+  //pageId is the id of the item we are requesting the details from the API
   final String pageId;
 
   @override
@@ -16,6 +18,8 @@ class _DetailPageState extends State<DetailPage> {
   @override
   void initState() {
     super.initState();
+
+    //getting item detail from the API
     _itemDetail = BackendService.getInstance().getDetail(widget.pageId);
   }
 
@@ -30,62 +34,15 @@ class _DetailPageState extends State<DetailPage> {
           builder:
               (BuildContext context, AsyncSnapshot<ItemDetailResult> snapshot) {
             List<Widget> children;
+
             if (snapshot.hasData) {
-              children = <Widget>[
-                Expanded(
-                  flex: 2,
-                  child: Container(
-                    margin: EdgeInsets.only(top: 50, bottom: 50),
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      image: DecorationImage(
-                          image: NetworkImage(snapshot.data.imageURL),
-                          fit: BoxFit.cover),
-                    ),
-                  ),
-                ),
-                Expanded(
-                  flex: 1,
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 5, right: 5),
-                    child: Text(
-                      snapshot.data.description,
-                      style: TextStyle(
-                          fontSize: 20,
-                          fontStyle: FontStyle.italic,
-                          fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                ),
-              ];
+              children = onSuccessDataWidget(snapshot);
             } else if (snapshot.hasError) {
-              children = <Widget>[
-                const Icon(
-                  Icons.error_outline,
-                  color: Colors.red,
-                  size: 60,
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 16),
-                  child: Text('Error: ${snapshot.error}'),
-                )
-              ];
+              children = errorWidget();
             } else {
-              children = const <Widget>[
-                SizedBox(
-                  child: CircularProgressIndicator(),
-                  width: 60,
-                  height: 60,
-                ),
-                Padding(
-                  padding: EdgeInsets.only(top: 16),
-                  child: Text(
-                    'Loading...',
-                    style: TextStyle(fontSize: 20),
-                  ),
-                )
-              ];
+              children = loadingWidget();
             }
+
             return Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -97,5 +54,68 @@ class _DetailPageState extends State<DetailPage> {
         ),
       ),
     );
+  }
+
+//this widget is called when API call is successful and we have some data to show
+  List<Widget> onSuccessDataWidget(AsyncSnapshot<ItemDetailResult> snapshot) {
+    return <Widget>[
+      Expanded(
+        flex: 2,
+        child: Container(
+          margin: EdgeInsets.only(top: 50, bottom: 50),
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            image: DecorationImage(
+                image: NetworkImage(snapshot.data.imageURL), fit: BoxFit.cover),
+          ),
+        ),
+      ),
+      Expanded(
+        flex: 1,
+        child: Padding(
+          padding: const EdgeInsets.only(left: 5, right: 5),
+          child: Text(
+            snapshot.data.description,
+            style: TextStyle(
+                fontSize: 20,
+                fontStyle: FontStyle.italic,
+                fontWeight: FontWeight.bold),
+          ),
+        ),
+      ),
+    ];
+  }
+
+//this widgets shows up until API call is in process
+  List<Widget> loadingWidget() {
+    return <Widget>[
+      SizedBox(
+        child: CircularProgressIndicator(),
+        width: 60,
+        height: 60,
+      ),
+      Padding(
+        padding: EdgeInsets.only(top: 16),
+        child: Text(
+          'Loading...',
+          style: TextStyle(fontSize: 20),
+        ),
+      )
+    ];
+  }
+
+//this widget is called when API call has failed and there is no data to show
+  List<Widget> errorWidget() {
+    return <Widget>[
+      const Icon(
+        Icons.error_outline,
+        color: Colors.red,
+        size: 60,
+      ),
+      Padding(
+        padding: const EdgeInsets.only(top: 16),
+        child: Text('Something went wrong ! Try refreshing the page.'),
+      )
+    ];
   }
 }

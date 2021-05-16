@@ -6,23 +6,34 @@ mixin ItemDetail {
   ItemDetailResult itemDetail = new ItemDetailResult();
   Future<ItemDetailResult> getDetail(String id) async {
     final itemDetailResponse = await fetchDescription(id);
+
     if (itemDetailResponse.statusCode == 200) {
       // If the server did return a 200 OK response,
       // then parse the JSON.
       Map<String, dynamic> descriptionResultJson =
           json.decode(itemDetailResponse.body);
-      // itemDetail.name = descriptionResultJson['name'];
+
       itemDetail.description = descriptionResultJson['brief_summary'];
+
+      //getting the image of item after getting text was successful
       final itemImageResponse = await fetchImage(id);
+
       if (itemImageResponse.statusCode == 200) {
         // If the server did return a 200 OK response,
         // then parse the JSON.
+
         try {
           Map<String, dynamic> imageResultJson =
               json.decode(itemImageResponse.body);
+
+          //getting image at position 1
+          //todo: get all the images to show
           itemDetail.imageURL =
               imageResultJson['taxonConcept']['dataObjects'][1]['eolMediaURL'];
         } catch (e) {
+          //getting image of 'no image available' to show when image data was not present in
+          //previous API call
+
           itemDetail.imageURL =
               'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTqICensWiWUSbyUFkXY0e1HL3H0ITIN1uuXetIyeyGJ9N21WfH5Pps1TxF7YLMFYaaq6E&usqp=CAU';
         }
@@ -56,6 +67,7 @@ mixin ItemDetail {
   }
 }
 
+//model class for item detail result
 class ItemDetailResult {
   String name;
   String description;
