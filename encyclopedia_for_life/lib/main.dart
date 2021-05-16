@@ -40,7 +40,7 @@ class _MyHomePageState extends State<MyHomePage> {
   // tells if the screen is in refreshing state or not
   bool isRefreshing = false;
   //get a random id to show up on dashboard for random fact
-  var randomId = Random().nextInt(500000);
+  var randomId = Random().nextInt(50000);
 
 // method to the the status of isAutoCompleteFocused
   void onAutoCompleteFocusChange(bool isFocused) {
