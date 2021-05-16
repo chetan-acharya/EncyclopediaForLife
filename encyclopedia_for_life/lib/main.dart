@@ -36,6 +36,10 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
 //tells if search bar is focused or not
   bool isAutoCompleteFocused = false;
+  // tells if the screen is in refreshing state or not
+  bool isRefreshing = false;
+  //get a random id to show up on dashboard for random fact
+  var randomId = Random().nextInt(35000);
 
 // method to the the status of isAutoCompleteFocused
   void onAutoCompleteFocusChange(bool isFocused) {
@@ -51,12 +55,6 @@ class _MyHomePageState extends State<MyHomePage> {
       });
     }
   }
-
-// tells if the screen is in refreshing state or not
-  bool isRefreshing = false;
-
-//get a random id to show up on dashboard for random fact
-  var randomId = Random().nextInt(35000);
 
   @override
   Widget build(BuildContext context) {
