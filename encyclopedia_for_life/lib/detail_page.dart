@@ -40,7 +40,7 @@ class _DetailPageState extends State<DetailPage> {
                       shape: BoxShape.circle,
                       image: DecorationImage(
                           image: NetworkImage(snapshot.data.imageURL),
-                          fit: BoxFit.fill),
+                          fit: BoxFit.cover),
                     ),
                   ),
                 ),
