@@ -26,6 +26,7 @@ class _DetailPageState extends State<DetailPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(),
       body: DefaultTextStyle(
         style: Theme.of(context).textTheme.headline2,
         textAlign: TextAlign.center,
