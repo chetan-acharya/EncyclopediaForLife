@@ -1,7 +1,9 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:encyclopedia_for_life/BackendService/item_detail.dart';
 import 'package:flutter/material.dart';
 import 'package:encyclopedia_for_life/BackendService/backend_service.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 
 class DetailPage extends StatefulWidget {
   DetailPage({Key key, this.pageId, this.showAppBar: false}) : super(key: key);
@@ -79,10 +81,23 @@ class _DetailPageState extends State<DetailPage> {
                 builder: (BuildContext context) {
                   return Container(
                     margin: EdgeInsets.only(bottom: 50),
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      image: DecorationImage(
-                          image: NetworkImage(imageURL), fit: BoxFit.cover),
+                    child: CachedNetworkImage(
+                      imageUrl: imageURL,
+                      imageBuilder: (context, imageProvider) => Container(
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          border: Border.all(
+                            color: Colors.black,
+                          ),
+                          image: DecorationImage(
+                            image: imageProvider,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      ),
+                      placeholder: (context, url) => getPlaceholderWidget(),
+                      errorWidget: (context, url, error) =>
+                          getOnImageURLServerExceptionWidget(),
                     ),
                   );
                 },
@@ -103,6 +118,27 @@ class _DetailPageState extends State<DetailPage> {
         ),
       ),
     ];
+  }
+
+  Container getPlaceholderWidget() {
+    return Container(
+      child: Center(child: CircularProgressIndicator()),
+      decoration: BoxDecoration(
+          shape: BoxShape.circle, border: Border.all(color: Colors.black)),
+    );
+  }
+
+  Container getOnImageURLServerExceptionWidget() {
+    return Container(
+      decoration: BoxDecoration(
+          shape: BoxShape.circle, border: Border.all(color: Colors.black)),
+      child: Center(
+        child: Icon(
+          Icons.error,
+          size: 100,
+        ),
+      ),
+    );
   }
 
 //this widgets shows up until API call is in process
