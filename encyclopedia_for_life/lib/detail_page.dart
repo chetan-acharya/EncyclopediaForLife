@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:encyclopedia_for_life/BackendService/item_detail.dart';
+import 'package:encyclopedia_for_life/eol_webview_page.dart';
 import 'package:flutter/material.dart';
 import 'package:encyclopedia_for_life/BackendService/backend_service.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
@@ -120,6 +121,16 @@ class _DetailPageState extends State<DetailPage> {
           ),
         ),
       ),
+      ElevatedButton(
+        onPressed: () {
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => EOLWebView(
+                    widget.pageId,
+                  )));
+        },
+        child: Text('show more info'),
+        style: Theme.of(context).elevatedButtonTheme.style,
+      )
     ];
   }
 
