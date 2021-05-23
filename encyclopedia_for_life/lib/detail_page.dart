@@ -34,6 +34,7 @@ class _DetailPageState extends State<DetailPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xFF8ab6d6),
       appBar: widget.showAppBar ? AppBar() : null,
       body: DefaultTextStyle(
         style: Theme.of(context).textTheme.headline2,
@@ -169,7 +170,7 @@ class _DetailPageState extends State<DetailPage> {
       Padding(
         padding: EdgeInsets.only(top: 16),
         child: Text(
-          'Loading...',
+          'Loading',
           style: TextStyle(fontSize: 20),
         ),
       )

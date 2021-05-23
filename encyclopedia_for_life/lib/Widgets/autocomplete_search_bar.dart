@@ -37,8 +37,20 @@ class AutocompleteSearchBar extends StatelessWidget {
             if ((suggestion.name as String).isEmpty) {
               return Container();
             }
-            return ListTile(
-                leading: Icon(Icons.pets), title: Text(suggestion.name));
+            return Container(
+              decoration: BoxDecoration(
+                color: Color(0xFF2978b5),
+                shape: BoxShape.rectangle,
+                border: Border.all(
+                    color: Theme.of(context)
+                        .buttonColor //Theme.of(context).accentColor,
+                    ),
+              ),
+              child: ListTile(
+                  tileColor: Color(0xFF2978b5),
+                  leading: Icon(Icons.pets),
+                  title: Text(suggestion.name)),
+            );
           },
           onSuggestionSelected: (suggestion) {
             Navigator.of(context).push(MaterialPageRoute(

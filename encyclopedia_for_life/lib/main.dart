@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         // This is the theme of your application.
-        primarySwatch: Colors.green,
+        primarySwatch: Colors.blue,
       ),
       home: MyHomePage(title: 'Encyclopedia For Life'),
     );
@@ -63,46 +63,57 @@ class _MyHomePageState extends State<MyHomePage> {
     );
     return Scaffold(
       // appBar: appBar,
-      body: Padding(
-        padding: const EdgeInsets.only(top: 20),
-        child: RefreshIndicator(
-          onRefresh: () {
-            setState(() {
-              isRefreshing = true;
-              //get a new random id to get new data from API
-              randomId = Random().nextInt(35000);
-            });
-            return Future.delayed(
-              //duration is 3 seconds for the refresh icon on the top because the server
-              //is taking generally this long to give response data
-              Duration(seconds: 3),
-              () {
-                setState(() {
-                  isRefreshing = false;
-                });
-              },
-            );
-          },
-          child: SingleChildScrollView(
-            physics: const AlwaysScrollableScrollPhysics(),
-            child: SizedBox(
-              width: double.infinity,
-              height: MediaQuery.of(context).size.height -
-                  appBar.preferredSize.height,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      getSearchBarWidget(),
-                    ],
-                  ),
-                  // getRandomFactWidget(),
-                  getDetailAreaWidget(),
-                  getPullToRefreshTextWidget()
-                ],
+      body: Container(
+        color: Color(0xFF8ab6d6),
+        // decoration: BoxDecoration(
+        //   image: DecorationImage(
+        //     image: NetworkImage(
+        //         "https://cdn.statically.io/img/wallpapercave.com/wp/wp4670912.jpg"),
+        //     fit: BoxFit.cover,
+        //   ),
+        // ),
+        height: double.infinity,
+        child: Padding(
+          padding: const EdgeInsets.only(top: 20),
+          child: RefreshIndicator(
+            onRefresh: () {
+              setState(() {
+                isRefreshing = true;
+                //get a new random id to get new data from API
+                randomId = Random().nextInt(35000);
+              });
+              return Future.delayed(
+                //duration is 3 seconds for the refresh icon on the top because the server
+                //is taking generally this long to give response data
+                Duration(seconds: 3),
+                () {
+                  setState(() {
+                    isRefreshing = false;
+                  });
+                },
+              );
+            },
+            child: SingleChildScrollView(
+              physics: const AlwaysScrollableScrollPhysics(),
+              child: SizedBox(
+                width: double.infinity,
+                height: MediaQuery.of(context).size.height -
+                    appBar.preferredSize.height,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        getSearchBarWidget(),
+                      ],
+                    ),
+                    // getRandomFactWidget(),
+                    getDetailAreaWidget(),
+                    getPullToRefreshTextWidget()
+                  ],
+                ),
               ),
             ),
           ),
@@ -115,7 +126,7 @@ class _MyHomePageState extends State<MyHomePage> {
     return Flexible(
       flex: 1,
       child: Text(
-        'Pull from the top to refresh',
+        'Pull from the top to discover more species',
         style: TextStyle(
             fontStyle: FontStyle.italic,
             //hack to show and hide when seach bar focus change
