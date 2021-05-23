@@ -87,13 +87,14 @@ class _DetailPageState extends State<DetailPage> {
                       imageUrl: imageURL,
                       imageBuilder: (context, imageProvider) => Container(
                         decoration: BoxDecoration(
-                          shape: BoxShape.circle,
+                          // shape: BoxShape.circle,
                           border: Border.all(
-                            color: Colors.black,
-                          ),
+                              color:
+                                  Colors.black //Theme.of(context).accentColor,
+                              ),
                           image: DecorationImage(
                             image: imageProvider,
-                            fit: BoxFit.cover,
+                            fit: BoxFit.fill,
                           ),
                         ),
                       ),
@@ -126,17 +127,20 @@ class _DetailPageState extends State<DetailPage> {
     return Container(
       child: Center(child: CircularProgressIndicator()),
       decoration: BoxDecoration(
-          shape: BoxShape.circle, border: Border.all(color: Colors.black)),
+          border: Border.all(color: Theme.of(context).accentColor)),
     );
   }
 
   Container getOnImageURLServerExceptionWidget() {
     return Container(
       decoration: BoxDecoration(
-          shape: BoxShape.circle, border: Border.all(color: Colors.black)),
+        border: Border.all(color: Colors.black),
+        color: Theme.of(context).backgroundColor,
+      ),
       child: Center(
         child: Icon(
           Icons.error,
+          color: Theme.of(context).errorColor,
           size: 100,
         ),
       ),
@@ -164,9 +168,9 @@ class _DetailPageState extends State<DetailPage> {
 //this widget is called when API call has failed and there is no data to show
   List<Widget> errorWidget() {
     return <Widget>[
-      const Icon(
+      Icon(
         Icons.error_outline,
-        color: Colors.red,
+        color: Theme.of(context).errorColor,
         size: 60,
       ),
       Padding(

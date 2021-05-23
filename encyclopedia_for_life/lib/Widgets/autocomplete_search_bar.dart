@@ -15,7 +15,9 @@ class AutocompleteSearchBar extends StatelessWidget {
           textFieldConfiguration: TextFieldConfiguration(
             decoration: new InputDecoration(
               labelText: "Search",
-              fillColor: Colors.white,
+              fillColor: Theme.of(context).buttonColor,
+              // border: InputBorder.none,
+              prefixIcon: Icon(Icons.search),
               border: new OutlineInputBorder(
                 borderRadius: new BorderRadius.circular(50.0),
                 borderSide: new BorderSide(),
@@ -25,7 +27,7 @@ class AutocompleteSearchBar extends StatelessWidget {
             style: TextStyle(
               fontStyle: FontStyle.italic,
               fontSize: 20,
-              color: Colors.purple,
+              color: Theme.of(context).textTheme.button.color,
             ),
           ),
           suggestionsCallback: (pattern) async {

@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         // This is the theme of your application.
-        primarySwatch: Colors.purple,
+        primarySwatch: Colors.green,
       ),
       home: MyHomePage(title: 'Encyclopedia For Life'),
     );
@@ -62,40 +62,48 @@ class _MyHomePageState extends State<MyHomePage> {
       title: Text(widget.title),
     );
     return Scaffold(
-      appBar: appBar,
-      body: RefreshIndicator(
-        onRefresh: () {
-          setState(() {
-            isRefreshing = true;
-            //get a new random id to get new data from API
-            randomId = Random().nextInt(35000);
-          });
-          return Future.delayed(
-            //duration is 3 seconds for the refresh icon on the top because the server
-            //is taking generally this long to give response data
-            Duration(seconds: 3),
-            () {
-              setState(() {
-                isRefreshing = false;
-              });
-            },
-          );
-        },
-        child: SingleChildScrollView(
-          physics: const AlwaysScrollableScrollPhysics(),
-          child: SizedBox(
-            width: double.infinity,
-            height: MediaQuery.of(context).size.height -
-                appBar.preferredSize.height,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                getSearchBarWidget(),
-                getRandomFactWidget(),
-                getDetailAreaWidget(),
-                getPullToRefreshTextWidget()
-              ],
+      // appBar: appBar,
+      body: Padding(
+        padding: const EdgeInsets.only(top: 20),
+        child: RefreshIndicator(
+          onRefresh: () {
+            setState(() {
+              isRefreshing = true;
+              //get a new random id to get new data from API
+              randomId = Random().nextInt(35000);
+            });
+            return Future.delayed(
+              //duration is 3 seconds for the refresh icon on the top because the server
+              //is taking generally this long to give response data
+              Duration(seconds: 3),
+              () {
+                setState(() {
+                  isRefreshing = false;
+                });
+              },
+            );
+          },
+          child: SingleChildScrollView(
+            physics: const AlwaysScrollableScrollPhysics(),
+            child: SizedBox(
+              width: double.infinity,
+              height: MediaQuery.of(context).size.height -
+                  appBar.preferredSize.height,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      getSearchBarWidget(),
+                    ],
+                  ),
+                  // getRandomFactWidget(),
+                  getDetailAreaWidget(),
+                  getPullToRefreshTextWidget()
+                ],
+              ),
             ),
           ),
         ),
@@ -107,7 +115,7 @@ class _MyHomePageState extends State<MyHomePage> {
     return Flexible(
       flex: 1,
       child: Text(
-        'Pull to refresh',
+        'Pull from the top to refresh',
         style: TextStyle(
             fontStyle: FontStyle.italic,
             //hack to show and hide when seach bar focus change
@@ -156,12 +164,13 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Container getSearchBarWidget() {
     return Container(
+      width: 300,
       height: 50,
       child: AutocompleteSearchBar(
         //callback is recieved when focus changes of search bar
         onFocusChange: onAutoCompleteFocusChange,
       ),
-      margin: const EdgeInsets.all(15),
+      margin: const EdgeInsets.only(top: 15, bottom: 15),
     );
   }
 }
