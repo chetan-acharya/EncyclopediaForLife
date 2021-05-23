@@ -1,9 +1,7 @@
 import 'dart:math';
-
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:encyclopedia_for_life/detail_page.dart';
 import 'package:flutter/material.dart';
-
 import 'Widgets/autocomplete_search_bar.dart';
 
 void main() {

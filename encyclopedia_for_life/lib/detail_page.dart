@@ -25,7 +25,9 @@ class _DetailPageState extends State<DetailPage> {
     super.initState();
 
     //getting item detail from the API
-    _itemDetail = BackendService.getInstance().getDetail(widget.pageId);
+    //isRandom indicates if the page is dashboard with random data or detail page
+    _itemDetail = BackendService.getInstance()
+        .getDetail(widget.pageId, isRandom: !widget.showAppBar);
   }
 
   @override
