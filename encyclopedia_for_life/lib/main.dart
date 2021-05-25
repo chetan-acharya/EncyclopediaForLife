@@ -1,5 +1,4 @@
 import 'dart:math';
-import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:encyclopedia_for_life/detail_page.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -110,7 +109,6 @@ class _MyHomePageState extends State<MyHomePage> {
                         getSearchBarWidget(),
                       ],
                     ),
-                    // getRandomFactWidget(),
                     getDetailAreaWidget(),
                     getPullToRefreshTextWidget()
                   ],
@@ -145,33 +143,6 @@ class _MyHomePageState extends State<MyHomePage> {
         pageId: randomId.toString(),
       ),
     );
-  }
-
-  SizedBox getRandomFactWidget() {
-    return SizedBox(
-        width: double.infinity,
-        height: 50,
-        child: Center(
-          child: AnimatedTextKit(
-            repeatForever: true,
-            animatedTexts: [
-              ColorizeAnimatedText(
-                'Random Fact',
-                textStyle: TextStyle(
-                  fontSize: isAutoCompleteFocused || isRefreshing ? 0 : 20,
-                  fontFamily: 'Horizon',
-                ),
-                colors: [
-                  Colors.purple,
-                  Colors.blue,
-                  Colors.blueAccent,
-                  Colors.lightBlue,
-                ],
-              ),
-            ],
-            isRepeatingAnimation: true,
-          ),
-        ));
   }
 
   Container getSearchBarWidget() {
