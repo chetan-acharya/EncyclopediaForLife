@@ -2,6 +2,7 @@ import 'dart:math';
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:encyclopedia_for_life/detail_page.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'Widgets/autocomplete_search_bar.dart';
 
 void main() {
@@ -127,10 +128,10 @@ class _MyHomePageState extends State<MyHomePage> {
       flex: 1,
       child: Text(
         'Pull from the top to discover more species',
-        style: TextStyle(
+        style: GoogleFonts.yanoneKaffeesatz(
             fontStyle: FontStyle.italic,
             //hack to show and hide when seach bar focus change
-            fontSize: isAutoCompleteFocused || isRefreshing ? 0 : 15),
+            fontSize: isAutoCompleteFocused || isRefreshing ? 0 : 18),
       ),
     );
   }

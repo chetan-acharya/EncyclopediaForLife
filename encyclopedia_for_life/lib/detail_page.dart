@@ -5,6 +5,7 @@ import 'package:encyclopedia_for_life/eol_webview_page.dart';
 import 'package:flutter/material.dart';
 import 'package:encyclopedia_for_life/BackendService/backend_service.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class DetailPage extends StatefulWidget {
   DetailPage({Key key, this.pageId, this.showAppBar: false}) : super(key: key);
@@ -115,23 +116,29 @@ class _DetailPageState extends State<DetailPage> {
           padding: const EdgeInsets.only(left: 5, right: 5),
           child: Text(
             snapshot.data.description,
-            style: TextStyle(
-                fontSize: 20,
+            style: GoogleFonts.yanoneKaffeesatz(
+                fontSize: 26,
                 fontStyle: FontStyle.italic,
                 fontWeight: FontWeight.bold),
           ),
         ),
       ),
       ElevatedButton(
-        onPressed: () {
-          Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => EOLWebView(
-                    widget.pageId,
-                  )));
-        },
-        child: Text('show more info'),
-        style: Theme.of(context).elevatedButtonTheme.style,
-      )
+          onPressed: () {
+            Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => EOLWebView(
+                      widget.pageId,
+                    )));
+          },
+          child: Text(
+            'show more info',
+            style: GoogleFonts.yanoneKaffeesatz(fontSize: 18),
+          ),
+          style: ButtonStyle(
+              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                  RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(18.0),
+                      side: BorderSide(color: Theme.of(context).buttonColor)))))
     ];
   }
 
@@ -170,8 +177,8 @@ class _DetailPageState extends State<DetailPage> {
       Padding(
         padding: EdgeInsets.only(top: 16),
         child: Text(
-          'Loading',
-          style: TextStyle(fontSize: 20),
+          'Loading...',
+          style: GoogleFonts.allan(fontSize: 30),
         ),
       )
     ];
