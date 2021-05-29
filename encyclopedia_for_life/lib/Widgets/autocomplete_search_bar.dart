@@ -39,29 +39,38 @@ class AutocompleteSearchBar extends StatelessWidget {
   Container getSearchListWidget(BuildContext context, suggestion) {
     return Container(
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.all(Radius.circular(50)),
-        color: Color(0xFF2978b5),
-        border: Border.all(
-            color:
-                Theme.of(context).buttonColor //Theme.of(context).accentColor,
-            ),
+        color: Color(0xFF8ab6d6),
+        border: Border(
+            left: BorderSide(color: Colors.lightBlue, width: 2),
+            right: BorderSide(color: Colors.lightBlue, width: 2)),
       ),
-      child: SizedBox(
-        height: 60,
-        child: Row(
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(left: 10, right: 10),
-              child: Flexible(
-                child: Icon(Icons.pets),
-                flex: 2,
+      child: Container(
+        // color: Colors.blue,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.all(Radius.circular(50)),
+          color: Color(0xFF2978b5),
+          border: Border.all(
+              color:
+                  Theme.of(context).buttonColor //Theme.of(context).accentColor,
               ),
-            ),
-            Flexible(
-              child: Text(suggestion.name),
-              flex: 6,
-            )
-          ],
+        ),
+        child: SizedBox(
+          height: 60,
+          child: Row(
+            children: [
+              Flexible(
+                flex: 2,
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 20, right: 20),
+                  child: Icon(Icons.pets),
+                ),
+              ),
+              Flexible(
+                child: Text(suggestion.name),
+                flex: 6,
+              )
+            ],
+          ),
         ),
       ),
     );

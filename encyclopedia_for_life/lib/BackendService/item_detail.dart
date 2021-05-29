@@ -60,7 +60,7 @@ mixin ItemDetail {
       // then throw an exception.
       itemDetail.name = '';
       itemDetail.description =
-          'No random data available. Pull from the top to refresh.';
+          'Data not available. Explore other spicies while we fix this.';
       itemDetail.imageURLs.add(
           'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTqICensWiWUSbyUFkXY0e1HL3H0ITIN1uuXetIyeyGJ9N21WfH5Pps1TxF7YLMFYaaq6E&usqp=CAU');
       return itemDetail;
