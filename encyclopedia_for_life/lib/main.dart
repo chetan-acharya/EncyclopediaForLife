@@ -65,13 +65,6 @@ class _MyHomePageState extends State<MyHomePage> {
       // appBar: appBar,
       body: Container(
         color: Color(0xFF8ab6d6),
-        // decoration: BoxDecoration(
-        //   image: DecorationImage(
-        //     image: NetworkImage(
-        //         "https://cdn.statically.io/img/wallpapercave.com/wp/wp4670912.jpg"),
-        //     fit: BoxFit.cover,
-        //   ),
-        // ),
         height: double.infinity,
         child: Padding(
           padding: const EdgeInsets.only(top: 20),

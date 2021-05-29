@@ -53,13 +53,19 @@ class _DetailPageState extends State<DetailPage> {
             } else {
               children = loadingWidget();
             }
-
+            bool isLanscape = MediaQuery.of(context).size.width > 850;
             return Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: children,
-              ),
+              child: isLanscape && snapshot.hasData
+                  ? Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: children,
+                    )
+                  : Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: children,
+                    ),
             );
           },
         ),
@@ -69,76 +75,89 @@ class _DetailPageState extends State<DetailPage> {
 
 //this widget is called when API call is successful and we have some data to show
   List<Widget> onSuccessDataWidget(AsyncSnapshot<ItemDetailResult> snapshot) {
+    bool isLanscape = MediaQuery.of(context).size.width > 850;
     return <Widget>[
       Flexible(
-          flex: 2,
-          child: CarouselSlider(
-            options: CarouselOptions(
-              height: double.infinity,
-              viewportFraction: 0.82,
-              autoPlay: true,
-              autoPlayInterval: Duration(seconds: 3),
-              autoPlayCurve: Curves.fastOutSlowIn,
-              enlargeCenterPage: true,
-            ),
-            items: snapshot.data.imageURLs.map((imageURL) {
-              return Builder(
-                builder: (BuildContext context) {
-                  return Container(
-                    margin: EdgeInsets.only(bottom: 50),
-                    child: CachedNetworkImage(
-                      imageUrl: imageURL,
-                      imageBuilder: (context, imageProvider) => Container(
-                        decoration: BoxDecoration(
-                          // shape: BoxShape.circle,
-                          border: Border.all(
-                              color:
-                                  Colors.black //Theme.of(context).accentColor,
-                              ),
-                          image: DecorationImage(
-                            image: imageProvider,
-                            fit: BoxFit.fill,
+          flex: 3,
+          child: Padding(
+            padding: isLanscape
+                ? const EdgeInsets.only(top: 10)
+                : const EdgeInsets.only(top: 50),
+            child: CarouselSlider(
+              options: CarouselOptions(
+                height: double.infinity,
+                viewportFraction: 0.82,
+                autoPlay: true,
+                autoPlayInterval: Duration(seconds: 3),
+                autoPlayCurve: Curves.fastOutSlowIn,
+                enlargeCenterPage: true,
+              ),
+              items: snapshot.data.imageURLs.map((imageURL) {
+                return Builder(
+                  builder: (BuildContext context) {
+                    return Container(
+                      margin: EdgeInsets.only(bottom: 50),
+                      child: CachedNetworkImage(
+                        imageUrl: imageURL,
+                        imageBuilder: (context, imageProvider) => Container(
+                          decoration: BoxDecoration(
+                            // shape: BoxShape.circle,
+                            border: Border.all(
+                                color: Colors
+                                    .black //Theme.of(context).accentColor,
+                                ),
+                            image: DecorationImage(
+                              image: imageProvider,
+                              fit: BoxFit.fill,
+                            ),
                           ),
                         ),
+                        placeholder: (context, url) => getPlaceholderWidget(),
+                        errorWidget: (context, url, error) =>
+                            getOnImageURLServerExceptionWidget(),
                       ),
-                      placeholder: (context, url) => getPlaceholderWidget(),
-                      errorWidget: (context, url, error) =>
-                          getOnImageURLServerExceptionWidget(),
-                    ),
-                  );
-                },
-              );
-            }).toList(),
+                    );
+                  },
+                );
+              }).toList(),
+            ),
           )),
       Flexible(
         flex: 1,
-        child: Padding(
-          padding: const EdgeInsets.only(left: 5, right: 5),
-          child: Text(
-            snapshot.data.description,
-            style: GoogleFonts.yanoneKaffeesatz(
-                fontSize: 26,
-                fontStyle: FontStyle.italic,
-                fontWeight: FontWeight.bold),
-          ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(left: 5, right: 5),
+              child: Text(
+                snapshot.data.description,
+                style: GoogleFonts.yanoneKaffeesatz(
+                    fontSize: 26,
+                    fontStyle: FontStyle.italic,
+                    fontWeight: FontWeight.bold),
+              ),
+            ),
+            ElevatedButton(
+                onPressed: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => EOLWebView(
+                            widget.pageId,
+                          )));
+                },
+                child: Text(
+                  'show more info',
+                  style: GoogleFonts.yanoneKaffeesatz(fontSize: 18),
+                ),
+                style: ButtonStyle(
+                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                        RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(18.0),
+                            side: BorderSide(
+                                color: Theme.of(context).buttonColor)))))
+          ],
         ),
       ),
-      ElevatedButton(
-          onPressed: () {
-            Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => EOLWebView(
-                      widget.pageId,
-                    )));
-          },
-          child: Text(
-            'show more info',
-            style: GoogleFonts.yanoneKaffeesatz(fontSize: 18),
-          ),
-          style: ButtonStyle(
-              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                  RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(18.0),
-                      side: BorderSide(color: Theme.of(context).buttonColor)))))
     ];
   }
 

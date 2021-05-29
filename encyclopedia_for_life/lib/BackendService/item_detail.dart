@@ -8,47 +8,33 @@ mixin ItemDetail {
   ItemDetailResult itemDetail;
   Future<ItemDetailResult> getDetail(String id, {bool isRandom = false}) async {
     itemDetail = new ItemDetailResult(imageURLs: []);
-    final itemDetailResponse = await fetchDescription(id);
 
-    if (itemDetailResponse.statusCode == 200) {
+    final itemImageResponse = await fetchImage(id);
+
+    if (itemImageResponse.statusCode == 200) {
       // If the server did return a 200 OK response,
       // then parse the JSON.
-      Map<String, dynamic> descriptionResultJson =
-          json.decode(itemDetailResponse.body);
+      try {
+        Map<String, dynamic> imageResultJson =
+            json.decode(itemImageResponse.body);
 
-      itemDetail.description = descriptionResultJson['brief_summary'];
-
-      //getting the image of item after getting text was successful
-      final itemImageResponse = await fetchImage(id);
-
-      if (itemImageResponse.statusCode == 200) {
-        // If the server did return a 200 OK response,
-        // then parse the JSON.
-
-        try {
-          Map<String, dynamic> imageResultJson =
-              json.decode(itemImageResponse.body);
-
-          //getting images and using it in imageURl
-
-          for (var item in imageResultJson['taxonConcept']['dataObjects']) {
-            itemDetail.imageURLs.add(item['eolMediaURL']);
-          }
-          return itemDetail;
-        } catch (e) {
-          //try to get another random item with image and detail
-          if (isRandom) {
-            return getDetail(Random().nextInt(50000).toString(),
-                isRandom: isRandom);
-          }
-          //getting image of 'no image available' to show when image data was not present in
-          //previous API call
-          itemDetail.imageURLs.add(
-              'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTqICensWiWUSbyUFkXY0e1HL3H0ITIN1uuXetIyeyGJ9N21WfH5Pps1TxF7YLMFYaaq6E&usqp=CAU');
-          return itemDetail;
+        //getting images and using it in imageURl
+        for (var item in imageResultJson['taxonConcept']['dataObjects']) {
+          itemDetail.imageURLs.add(item['eolMediaURL']);
         }
-      } else {
-        return getDetail(id);
+        //get description data and return the result
+        return await getDescriptionData(id, isRandom);
+      } catch (e) {
+        if (isRandom) {
+          return getDetail(Random().nextInt(50000).toString(),
+              isRandom: isRandom);
+        }
+        //getting image of 'no image available' to show when image data was not present in
+        //previous API call
+        itemDetail.imageURLs.add(
+            'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTqICensWiWUSbyUFkXY0e1HL3H0ITIN1uuXetIyeyGJ9N21WfH5Pps1TxF7YLMFYaaq6E&usqp=CAU');
+        //get description data and return the result
+        return await getDescriptionData(id, isRandom);
       }
     } else {
       //try to get another random item with image and detail
@@ -56,14 +42,11 @@ mixin ItemDetail {
         return getDetail(Random().nextInt(50000).toString(),
             isRandom: isRandom);
       }
-      // If the server did not return a 200 OK response,
-      // then throw an exception.
-      itemDetail.name = '';
-      itemDetail.description =
-          'Data not available. Explore other spicies while we fix this.';
+
       itemDetail.imageURLs.add(
           'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTqICensWiWUSbyUFkXY0e1HL3H0ITIN1uuXetIyeyGJ9N21WfH5Pps1TxF7YLMFYaaq6E&usqp=CAU');
-      return itemDetail;
+      //get description data and return the result
+      return await getDescriptionData(id, isRandom);
     }
   }
 
@@ -80,6 +63,39 @@ mixin ItemDetail {
     };
     return http.get(Uri.https(
         'eol.org', 'api/pages/1.0/' + id + '.json', _queryParameters));
+  }
+
+  Future<ItemDetailResult> getDescriptionData(String id, bool isRandom) async {
+    final itemDetailResponse = await fetchDescription(id);
+
+    if (itemDetailResponse.statusCode == 200) {
+      // If the server did return a 200 OK response,
+      // then parse the JSON.
+      try {
+        Map<String, dynamic> descriptionResultJson =
+            json.decode(itemDetailResponse.body);
+
+        itemDetail.description = descriptionResultJson['brief_summary'];
+
+        return itemDetail;
+      } catch (e) {
+        if (isRandom) {
+          return getDetail(Random().nextInt(50000).toString(),
+              isRandom: isRandom);
+        }
+        itemDetail.description =
+            'Data not available. Explore other spicies while we update our data.';
+        return itemDetail;
+      }
+    } else {
+      if (isRandom) {
+        return getDetail(Random().nextInt(50000).toString(),
+            isRandom: isRandom);
+      }
+      itemDetail.description =
+          'Data not available. Explore other spicies while we update our data.';
+      return itemDetail;
+    }
   }
 }
 
