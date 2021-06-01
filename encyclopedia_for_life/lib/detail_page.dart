@@ -92,30 +92,49 @@ class _DetailPageState extends State<DetailPage> {
                 autoPlayCurve: Curves.fastOutSlowIn,
                 enlargeCenterPage: true,
               ),
-              items: snapshot.data.imageURLs.map((imageURL) {
+              items: snapshot.data.imageDetailList.map((imageDetail) {
                 return Builder(
                   builder: (BuildContext context) {
                     return Container(
                       margin: EdgeInsets.only(bottom: 50),
-                      child: CachedNetworkImage(
-                        imageUrl: imageURL,
-                        imageBuilder: (context, imageProvider) => Container(
-                          decoration: BoxDecoration(
-                            // shape: BoxShape.circle,
-                            border: Border.all(
-                                color: Colors
-                                    .black //Theme.of(context).accentColor,
+                      child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Flexible(
+                              flex: 1,
+                              child: CachedNetworkImage(
+                                imageUrl: imageDetail.imageUrl,
+                                imageBuilder: (context, imageProvider) =>
+                                    Container(
+                                  decoration: BoxDecoration(
+                                    // shape: BoxShape.circle,
+                                    border: Border.all(
+                                        color: Colors
+                                            .black //Theme.of(context).accentColor,
+                                        ),
+                                    image: DecorationImage(
+                                      image: imageProvider,
+                                      fit: BoxFit.fill,
+                                    ),
+                                  ),
                                 ),
-                            image: DecorationImage(
-                              image: imageProvider,
-                              fit: BoxFit.fill,
+                                placeholder: (context, url) =>
+                                    getPlaceholderWidget(),
+                                errorWidget: (context, url, error) =>
+                                    getOnImageURLServerExceptionWidget(),
+                              ),
                             ),
-                          ),
-                        ),
-                        placeholder: (context, url) => getPlaceholderWidget(),
-                        errorWidget: (context, url, error) =>
-                            getOnImageURLServerExceptionWidget(),
-                      ),
+                            TextButton.icon(
+                                onPressed: null,
+                                icon: Icon(Icons.copyright),
+                                label: Flexible(
+                                  child: Text(
+                                    imageDetail.licenseInformation,
+                                    style: TextStyle(fontSize: 10),
+                                  ),
+                                ))
+                          ]),
                     );
                   },
                 );
